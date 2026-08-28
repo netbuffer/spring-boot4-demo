@@ -1,0 +1,52 @@
+### Hello
+GET {{host}}/hello
+
+### Actuator Health
+GET {{host}}/actuator/health
+
+### DotEnv - list
+GET {{host}}/dotenv/list
+
+### DotEnv - myEnvVar1
+GET {{host}}/dotenv/myEnvVar1
+
+###
+
+### Greeting API - hello
+GET {{host}}/api/greeting
+
+### Greeting API - hello with name
+GET {{host}}/api/greeting/Spring
+
+### Greeting API - search
+GET {{host}}/api/greeting/search?keyword=mono
+
+### Greeting API - greet (POST)
+POST {{host}}/api/greeting
+Content-Type: application/json
+
+{
+  "name": "World"
+}
+
+###
+
+### HttpExchange Demo - local hello
+GET {{host}}/demo/http-exchange/local/hello
+
+### HttpExchange Demo - local hello with name
+GET {{host}}/demo/http-exchange/local/hello/Spring
+
+### HttpExchange Demo - local greet
+GET {{host}}/demo/http-exchange/local/greet/World
+
+### HttpExchange Demo - local search
+GET {{host}}/demo/http-exchange/local/search?keyword=spring
+
+### HttpExchange Demo - public ip
+GET {{host}}/demo/http-exchange/public/ip
+
+###
+
+### SSE - data retry
+GET {{host}}/sse/data/retry

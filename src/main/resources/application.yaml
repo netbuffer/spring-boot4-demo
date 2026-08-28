@@ -1,0 +1,13 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: spring-boot4-demo
+
+sb4d:
+  my_env_var1: ${MY_ENV_VAR1}
+
+app:
+  ip-query:
+    base-url: https://api.bilibili.com
