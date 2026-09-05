@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: 18297
 
 spring:
   application:
@@ -10,4 +10,4 @@ sb4d:
 
 app:
   ip-query:
-    base-url: https://api.bilibili.com
+    base-url: ${APP_IP_QUERY_BASE_URL:https://api.bilibili.com}

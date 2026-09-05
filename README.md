@@ -15,6 +15,7 @@
 - 🔐 dotenv-java 环境变量加载与读取
 - 📡 Server-Sent Events 实时数据流推送
 - 🔌 声明式 HTTP Interface Client（`@HttpExchange` + WebClient）
+- 🕒 Java 时间类型（`LocalTime` / `LocalDate` / `LocalDateTime`）序列化演示
 - 🏥 Spring Boot Actuator 健康检查
 
 ## 🚀 快速开始
@@ -29,7 +30,7 @@
 java -jar spring-boot4-demo.jar
 ```
 
-应用默认监听 **8080** 端口，可通过环境变量 `SERVER_PORT` 修改。
+本地默认端口见 `application.yaml` 中的 **18297**；Docker 示例使用 **8080**。均可通过环境变量 `SERVER_PORT` 覆盖。
 
 ### 🐳 Docker 运行
 
@@ -80,7 +81,21 @@ docker compose up -d
 | `GET /dotenv/myEnvVar1` | 🔍 返回配置项 `sb4d.my_env_var1` 的值 |
 | `GET /sse/data` | 📡 SSE 流，每秒推送当前时间戳 |
 | `GET /sse/data/retry` | 🔄 带重试配置的 SSE（重试间隔 5 秒） |
+| `GET /api/greeting` | 🔌 HttpExchange 问候 |
+| `GET /api/greeting/{name}` | 🔌 带路径参数的问候 |
+| `POST /api/greeting` | 🔌 JSON 问候（body: `{ "name": "..." }`） |
+| `GET /api/greeting/search?keyword=` | 🔌 关键字搜索 |
+| `GET /demo/http-exchange/local/hello` | 🔌 通过 GreetingClient 调用本地 API |
+| `GET /demo/http-exchange/local/hello/{name}` | 🔌 本地 Client 路径参数演示 |
+| `GET /demo/http-exchange/local/greet/{name}` | 🔌 本地 Client POST 问候演示 |
+| `GET /demo/http-exchange/local/search?keyword=` | 🔌 本地 Client 搜索演示 |
+| `GET /demo/http-exchange/public/ip` | 🔌 外部 IP/区域查询 Client 演示 |
+| `GET /datetime/test/localtime` | 🕒 返回 `LocalTime` |
+| `GET /datetime/test/localdate` | 🕒 返回 `LocalDate` |
+| `GET /datetime/test/localdatetime` | 🕒 返回 `LocalDateTime` |
 | `GET /actuator/health` | 💚 健康检查 |
+
+更多可直接运行的请求样本见 [`http/spring-boot4-demo.http`](http/spring-boot4-demo.http)。
 
 ## 🔨 构建
 
@@ -126,13 +141,17 @@ MY_ENV_VAR1=spring-boot4-demo-value
 ```yaml
 sb4d:
   my_env_var1: ${MY_ENV_VAR1}
+
+app:
+  ip-query:
+    base-url: ${APP_IP_QUERY_BASE_URL:https://api.bilibili.com}
 ```
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `SERVER_PORT` | `8080` | 服务监听端口 |
-| `MY_ENV_VAR1` | - | dotenv 配置项，映射到 `sb4d.my_env_var1` |
-| `APP_IP_QUERY_BASE_URL` | `https://api.bilibili.com` | HTTP Interface Client 请求基地址 |
+| `SERVER_PORT` | `18297`（本地 yaml）/ `8080`（Docker） | 服务监听端口 |
+| `MY_ENV_VAR1` | - | 必填；映射到 `sb4d.my_env_var1`（可由 `sb4d.env` 提供） |
+| `APP_IP_QUERY_BASE_URL` | `https://api.bilibili.com` | `IpQueryClient` 请求基地址（对应 `app.ip-query.base-url`） |
 | `JAVA_OPTS` | - | JVM 启动参数（Docker 运行时） |
 | `SPRING_PROFILES_ACTIVE` | - | 激活的 Spring Profile |
 

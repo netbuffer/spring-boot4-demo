@@ -48,5 +48,17 @@ GET {{host}}/demo/http-exchange/public/ip
 
 ###
 
+### SSE - data
+GET {{host}}/sse/data
+
 ### SSE - data retry
 GET {{host}}/sse/data/retry
+
+### Java Date localtime
+GET {{host}}/datetime/test/localtime
+
+### Java Date localdate
+GET {{host}}/datetime/test/localdate
+
+### Java Date localdatetime
+GET {{host}}/datetime/test/localdatetime
