@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: spring-boot4-demo
+  threads:
+    virtual:
+      enabled: true
 
 sb4d:
   my_env_var1: ${MY_ENV_VAR1}

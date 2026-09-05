@@ -54,6 +54,31 @@ GET {{host}}/sse/data
 ### SSE - data retry
 GET {{host}}/sse/data/retry
 
+### Virtual Thread - info
+GET {{host}}/demo/virtual-thread/info
+
+### Virtual Thread - parallel
+GET {{host}}/demo/virtual-thread/parallel?tasks=20&sleepMs=200
+
+###
+
+### Text Block - basic
+GET {{host}}/demo/text-block/basic
+
+### Text Block - html
+GET {{host}}/demo/text-block/html?title=Spring%20Boot%204
+
+### Text Block - json
+GET {{host}}/demo/text-block/json?name=didi&age=18
+
+### Text Block - sql
+GET {{host}}/demo/text-block/sql?keyword=spring
+
+### Text Block - escape
+GET {{host}}/demo/text-block/escape
+
+###
+
 ### Java Date localtime
 GET {{host}}/datetime/test/localtime
 

@@ -93,6 +93,13 @@ docker compose up -d
 | `GET /datetime/test/localtime` | 🕒 返回 `LocalTime` |
 | `GET /datetime/test/localdate` | 🕒 返回 `LocalDate` |
 | `GET /datetime/test/localdatetime` | 🕒 返回 `LocalDateTime` |
+| `GET /demo/virtual-thread/info` | 🧵 查看当前请求是否运行在虚拟线程上 |
+| `GET /demo/virtual-thread/parallel?tasks=&sleepMs=` | 🧵 用虚拟线程并行执行阻塞任务 |
+| `GET /demo/text-block/basic` | 📄 文本块 vs `\n` 经典写法 |
+| `GET /demo/text-block/html?title=` | 📄 文本块拼 HTML |
+| `GET /demo/text-block/json?name=&age=` | 📄 文本块拼 JSON |
+| `GET /demo/text-block/sql?keyword=` | 📄 文本块拼 SQL |
+| `GET /demo/text-block/escape` | 📄 文本块转义（`\"` / `\s`） |
 | `GET /actuator/health` | 💚 健康检查 |
 
 更多可直接运行的请求样本见 [`http/spring-boot4-demo.http`](http/spring-boot4-demo.http)。
