@@ -16,6 +16,7 @@
 - 📡 Server-Sent Events 实时数据流推送
 - 🔌 声明式 HTTP Interface Client（`@HttpExchange` + WebClient）
 - 🕒 Java 时间类型（`LocalTime` / `LocalDate` / `LocalDateTime`）序列化演示
+- 🧩 `SmartInitializingSingleton` 启动时收集 `PayHandler` 建渠道分发表
 - 🏥 Spring Boot Actuator 健康检查
 
 ## 🚀 快速开始
@@ -100,9 +101,39 @@ docker compose up -d
 | `GET /demo/text-block/json?name=&age=` | 📄 文本块拼 JSON |
 | `GET /demo/text-block/sql?keyword=` | 📄 文本块拼 SQL |
 | `GET /demo/text-block/escape` | 📄 文本块转义（`\"` / `\s`） |
+| `GET /demo/pay/{channel}?amount=` | 💳 走启动时建好的渠道表（`alipay` / `wechat`） |
+| `GET /demo/pay/registry` | 🧩 渠道表 + 三个时机的执行记录 |
 | `GET /actuator/health` | 💚 健康检查 |
 
 更多可直接运行的请求样本见 [`http/spring-boot4-demo.http`](http/spring-boot4-demo.http)。
+
+### 🧩 SmartInitializingSingleton
+
+一句话：**该建的对象全建完了，而网站还没开门接单**——就在这个窗口里做一次性的全局动作。
+
+`lifecycle/PayDispatcher` 就在这一步把所有 `PayHandler` 收进 `channel -> handler` 表，顺手校验渠道不重复、不为空——有问题进程直接启动失败，而不是等第一笔支付才报错。以后加新渠道只多写一个 `@Component` 类，`PayDispatcher` 一行不改。
+
+启动日志会直接把三个时机打出来。下面是本机一次真实启动（端口 18300）的节选，可以看到端口就开在 2/3 与 3/3 之间：
+
+```text
+[lifecycle] 1/3 @PostConstruct              (JVM +1961ms) -> 我刚建好，支付渠道只出生了 0 个（一共 2 个）—— 别的对象还在后面排队，这时候清点必然数漏
+[lifecycle] 2/3 afterSingletonsInstantiated (JVM +2423ms) -> 所有对象都建完了，而网站还没开门—— 2 个渠道一次登记齐 [alipay, wechat]，就该在这步干活
+Tomcat started on port 18300 (http) with context path '/'        <- 端口在这里开
+Started SpringBoot4DemoApplication in 2.142 seconds (process running for 2.476)
+[lifecycle] 3/3 ApplicationRunner           (JVM +2533ms) -> 网站已经开门迎客，可能早就有请求打进来—— 这时才登记就晚了，本步只是回头核对一下（表里已有 2 个渠道）
+```
+
+不想翻控制台就访问 `GET /demo/pay/registry`，字段含义：
+
+| 字段 | 含义 |
+|------|------|
+| `seenAtPostConstruct` | `@PostConstruct` 时**已创建**的 Handler 数；对象还在后面排队，**不能在这建表**（具体值取决于创建顺序，只当观察值） |
+| `knownHandlerBeans` | 同一时刻能看到多少个 Handler 的 **Bean 定义**（定义全了，实例还没全） |
+| `registeredAtCallback` | `afterSingletonsInstantiated()` 里实际建表的数量；全量 ✅ |
+| `readyAtRunner` | `ApplicationRunner` 才确认就绪；已经晚了，门开着、可能已有流量 |
+| `phases` | 上面那三行日志原文，按执行顺序排列 |
+
+其中 1/3 与 3/3 只是对照组，删掉不影响功能；真业务代码里 `PayDispatcher` 只需要实现 `SmartInitializingSingleton` 一个接口。
 
 ## 🔨 构建
 

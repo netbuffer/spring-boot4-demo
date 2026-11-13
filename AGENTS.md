@@ -27,6 +27,7 @@ src/main/java/cn/netbuffer/spring/boot4/demo/
 ├── api/ + api/dto/                   # @HttpExchange 契约
 ├── client/                           # 出站客户端（多为 Mono）
 ├── config/                           # HttpClientConfig 等
+├── lifecycle/                        # PayHandler + SmartInitializingSingleton 分发表
 └── controller/
 src/test/java/…                       # SpringBootTest + WebTestClient
 http/                                 # IntelliJ HTTP Client 示例

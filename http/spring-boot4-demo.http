@@ -87,3 +87,14 @@ GET {{host}}/datetime/test/localdate
 
 ### Java Date localdatetime
 GET {{host}}/datetime/test/localdatetime
+
+###
+
+### Pay - alipay（走启动时建好的渠道表）
+GET {{host}}/demo/pay/alipay?amount=12.50
+
+### Pay - wechat
+GET {{host}}/demo/pay/wechat?amount=1
+
+### Singleton Lifecycle - registry（三个时机执行记录）
+GET {{host}}/demo/pay/registry
